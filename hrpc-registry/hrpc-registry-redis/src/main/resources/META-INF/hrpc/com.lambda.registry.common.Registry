@@ -1,0 +1,1 @@
+redis = com.lambda.registry.redis.RedisRegistry
