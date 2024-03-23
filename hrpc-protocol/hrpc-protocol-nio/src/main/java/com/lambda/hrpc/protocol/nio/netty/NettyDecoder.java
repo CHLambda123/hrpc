@@ -1,18 +1,18 @@
-package com.lambda.hrpc.protocol.nio;
+package com.lambda.hrpc.protocol.nio.netty;
 
 import com.google.protobuf.Message;
-import com.lambda.hrpc.protocol.common.util.ProtocolUtil;
+import com.lambda.hrpc.common.protocol.util.ProtocolUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-public class NioProtocolDecoder extends ByteToMessageDecoder {
+public class NettyDecoder extends ByteToMessageDecoder {
     private int length = 0;
     private final Class<?> decoderType;
     
-    public NioProtocolDecoder(Class<?> decoderType) {
+    public NettyDecoder(Class<?> decoderType) {
         this.decoderType = decoderType;
     }
     

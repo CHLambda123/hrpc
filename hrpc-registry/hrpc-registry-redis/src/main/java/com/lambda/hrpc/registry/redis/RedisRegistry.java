@@ -2,8 +2,8 @@ package com.lambda.hrpc.registry.redis;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.lambda.hrpc.common.entity.RegistryInfo;
-import com.lambda.hrpc.registry.common.Registry;
+import com.lambda.hrpc.common.registry.RegistryInfo;
+import com.lambda.hrpc.common.registry.Registry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 

@@ -11,6 +11,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/hrpc-protocol/hrpc-protocol-common/pom.xml" />
         <option value="$PROJECT_DIR$/hrpc-registry/demo/pom.xml" />
         <option value="$PROJECT_DIR$/hrpc-registry/hrpc-registry-file/pom.xml" />
       </set>

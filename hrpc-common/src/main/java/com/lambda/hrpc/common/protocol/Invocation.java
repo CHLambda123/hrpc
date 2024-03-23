@@ -2,7 +2,7 @@
 // source: Invocation.proto
 // Protobuf Java Version: 4.26.0
 
-package com.lambda.hrpc.protocol.common;
+package com.lambda.hrpc.common.protocol;
 
 public final class Invocation {
   private Invocation() {}
@@ -145,15 +145,15 @@ public final class Invocation {
 
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.lambda.hrpc.protocol.common.Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_descriptor;
+      return Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.lambda.hrpc.protocol.common.Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_fieldAccessorTable
+      return Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.lambda.hrpc.protocol.common.Invocation.AppInvocation.class, com.lambda.hrpc.protocol.common.Invocation.AppInvocation.Builder.class);
+              Invocation.AppInvocation.class, Invocation.AppInvocation.Builder.class);
     }
 
     public static final int SERVICENAME_FIELD_NUMBER = 1;
@@ -420,10 +420,10 @@ public final class Invocation {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.lambda.hrpc.protocol.common.Invocation.AppInvocation)) {
+      if (!(obj instanceof Invocation.AppInvocation)) {
         return super.equals(obj);
       }
-      com.lambda.hrpc.protocol.common.Invocation.AppInvocation other = (com.lambda.hrpc.protocol.common.Invocation.AppInvocation) obj;
+      Invocation.AppInvocation other = (Invocation.AppInvocation) obj;
 
       if (!getServiceName()
           .equals(other.getServiceName())) return false;
@@ -465,44 +465,44 @@ public final class Invocation {
       return hash;
     }
 
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(byte[] data)
+    public static Invocation.AppInvocation parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(java.io.InputStream input)
+    public static Invocation.AppInvocation parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -510,26 +510,26 @@ public final class Invocation {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseDelimitedFrom(java.io.InputStream input)
+    public static Invocation.AppInvocation parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseDelimitedFrom(
+    public static Invocation.AppInvocation parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation parseFrom(
+    public static Invocation.AppInvocation parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -542,7 +542,7 @@ public final class Invocation {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.lambda.hrpc.protocol.common.Invocation.AppInvocation prototype) {
+    public static Builder newBuilder(Invocation.AppInvocation prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -563,21 +563,21 @@ public final class Invocation {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.lambda.hrpc.protocol.common.AppInvocation)
-        com.lambda.hrpc.protocol.common.Invocation.AppInvocationOrBuilder {
+        Invocation.AppInvocationOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.lambda.hrpc.protocol.common.Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_descriptor;
+        return Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.lambda.hrpc.protocol.common.Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_fieldAccessorTable
+        return Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.lambda.hrpc.protocol.common.Invocation.AppInvocation.class, com.lambda.hrpc.protocol.common.Invocation.AppInvocation.Builder.class);
+                Invocation.AppInvocation.class, Invocation.AppInvocation.Builder.class);
       }
 
-      // Construct using com.lambda.hrpc.protocol.common.Invocation.AppInvocation.newBuilder()
+      // Construct using com.lambda.hrpc.common.protocol.Invocation.AppInvocation.newBuilder()
       private Builder() {
 
       }
@@ -609,17 +609,17 @@ public final class Invocation {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.lambda.hrpc.protocol.common.Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_descriptor;
+        return Invocation.internal_static_com_lambda_hrpc_protocol_common_AppInvocation_descriptor;
       }
 
       @java.lang.Override
-      public com.lambda.hrpc.protocol.common.Invocation.AppInvocation getDefaultInstanceForType() {
-        return com.lambda.hrpc.protocol.common.Invocation.AppInvocation.getDefaultInstance();
+      public Invocation.AppInvocation getDefaultInstanceForType() {
+        return Invocation.AppInvocation.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.lambda.hrpc.protocol.common.Invocation.AppInvocation build() {
-        com.lambda.hrpc.protocol.common.Invocation.AppInvocation result = buildPartial();
+      public Invocation.AppInvocation build() {
+        Invocation.AppInvocation result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -627,15 +627,15 @@ public final class Invocation {
       }
 
       @java.lang.Override
-      public com.lambda.hrpc.protocol.common.Invocation.AppInvocation buildPartial() {
-        com.lambda.hrpc.protocol.common.Invocation.AppInvocation result = new com.lambda.hrpc.protocol.common.Invocation.AppInvocation(this);
+      public Invocation.AppInvocation buildPartial() {
+        Invocation.AppInvocation result = new Invocation.AppInvocation(this);
         buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      private void buildPartialRepeatedFields(com.lambda.hrpc.protocol.common.Invocation.AppInvocation result) {
+      private void buildPartialRepeatedFields(Invocation.AppInvocation result) {
         if (paramsBuilder_ == null) {
           if (((bitField0_ & 0x00000010) != 0)) {
             params_ = java.util.Collections.unmodifiableList(params_);
@@ -647,7 +647,7 @@ public final class Invocation {
         }
       }
 
-      private void buildPartial0(com.lambda.hrpc.protocol.common.Invocation.AppInvocation result) {
+      private void buildPartial0(Invocation.AppInvocation result) {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.serviceName_ = serviceName_;
@@ -666,16 +666,16 @@ public final class Invocation {
 
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.lambda.hrpc.protocol.common.Invocation.AppInvocation) {
-          return mergeFrom((com.lambda.hrpc.protocol.common.Invocation.AppInvocation)other);
+        if (other instanceof Invocation.AppInvocation) {
+          return mergeFrom((Invocation.AppInvocation)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.lambda.hrpc.protocol.common.Invocation.AppInvocation other) {
-        if (other == com.lambda.hrpc.protocol.common.Invocation.AppInvocation.getDefaultInstance()) return this;
+      public Builder mergeFrom(Invocation.AppInvocation other) {
+        if (other == Invocation.AppInvocation.getDefaultInstance()) return this;
         if (!other.getServiceName().isEmpty()) {
           serviceName_ = other.serviceName_;
           bitField0_ |= 0x00000001;
@@ -1375,12 +1375,12 @@ public final class Invocation {
     }
 
     // @@protoc_insertion_point(class_scope:com.lambda.hrpc.protocol.common.AppInvocation)
-    private static final com.lambda.hrpc.protocol.common.Invocation.AppInvocation DEFAULT_INSTANCE;
+    private static final Invocation.AppInvocation DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.lambda.hrpc.protocol.common.Invocation.AppInvocation();
+      DEFAULT_INSTANCE = new Invocation.AppInvocation();
     }
 
-    public static com.lambda.hrpc.protocol.common.Invocation.AppInvocation getDefaultInstance() {
+    public static Invocation.AppInvocation getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -1416,7 +1416,7 @@ public final class Invocation {
     }
 
     @java.lang.Override
-    public com.lambda.hrpc.protocol.common.Invocation.AppInvocation getDefaultInstanceForType() {
+    public Invocation.AppInvocation getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 

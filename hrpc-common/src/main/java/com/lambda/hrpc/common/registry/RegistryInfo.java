@@ -1,4 +1,4 @@
-package com.lambda.hrpc.common.entity;
+package com.lambda.hrpc.common.registry;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

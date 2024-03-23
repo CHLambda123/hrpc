@@ -1,8 +1,8 @@
-package com.lambda.hrpc.protocol.nio;
+package com.lambda.hrpc.protocol.nio.netty;
 
 import com.google.protobuf.Message;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
-import com.lambda.hrpc.protocol.common.Invocation;
+import com.lambda.hrpc.common.protocol.Invocation;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -41,14 +41,13 @@ public class NettyServer {
                 protected void initChannel(Channel channel) throws Exception {
                     channel.pipeline()
                             .addLast(protocolEncoder)
-                            .addLast(new NioProtocolDecoder(Invocation.AppInvocation.class))
+                            .addLast(new NettyDecoder(Invocation.AppInvocation.class))
                             .addLast(protocolHandler);
                 }
             });
             log.info("netty server start on port: {}", port);
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
             channelFuture.channel().closeFuture().sync();
-//            log.info("netty server stop on port: {}", port);
         } catch (Exception e) {
             throw new HrpcRuntimeException(e);
         }

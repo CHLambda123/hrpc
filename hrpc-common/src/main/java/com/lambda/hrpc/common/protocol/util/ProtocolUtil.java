@@ -1,10 +1,10 @@
-package com.lambda.hrpc.protocol.common.util;
+package com.lambda.hrpc.common.protocol.util;
 
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
-import com.lambda.hrpc.protocol.common.Invocation;
+import com.lambda.hrpc.common.protocol.Invocation;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

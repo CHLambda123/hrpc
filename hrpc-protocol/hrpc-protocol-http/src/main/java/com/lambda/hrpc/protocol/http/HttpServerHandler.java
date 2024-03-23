@@ -3,8 +3,8 @@ package com.lambda.hrpc.protocol.http;
 
 import com.google.protobuf.Message;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
-import com.lambda.hrpc.protocol.common.Invocation;
-import com.lambda.hrpc.protocol.common.util.ProtocolUtil;
+import com.lambda.hrpc.common.protocol.Invocation;
+import com.lambda.hrpc.common.protocol.util.ProtocolUtil;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;

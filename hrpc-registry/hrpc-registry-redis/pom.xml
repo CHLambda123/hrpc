@@ -16,29 +16,23 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jedis.version>4.0.0</jedis.version>
-        <guava.version>33.0.0-jre</guava.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.lambda</groupId>
             <artifactId>hrpc-registry-common</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>${jedis.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>com.lambda</groupId>
             <artifactId>hrpc-registry-common</artifactId>
-            <version>${revision}</version>
         </dependency>
     </dependencies>
 

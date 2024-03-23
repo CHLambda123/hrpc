@@ -1,9 +1,9 @@
-package com.lambda.hrpc.protocol.nio;
+package com.lambda.hrpc.protocol.nio.netty;
 
 import com.google.protobuf.Message;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
-import com.lambda.hrpc.protocol.common.Invocation;
-import com.lambda.hrpc.protocol.common.util.ProtocolUtil;
+import com.lambda.hrpc.common.protocol.Invocation;
+import com.lambda.hrpc.common.protocol.util.ProtocolUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -11,9 +11,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.Map;
 
 @ChannelHandler.Sharable
-public class NioProtocolServerHandler extends SimpleChannelInboundHandler<Invocation.AppInvocation> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<Invocation.AppInvocation> {
     private final Map<String, Map<String, Object>> localServicesCache;
-    public NioProtocolServerHandler(Map<String, Map<String, Object>> localServicesCache) {
+    public NettyServerHandler(Map<String, Map<String, Object>> localServicesCache) {
         this.localServicesCache = localServicesCache;
     }
 

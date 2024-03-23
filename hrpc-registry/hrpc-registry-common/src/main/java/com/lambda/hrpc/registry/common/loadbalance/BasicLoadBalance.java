@@ -1,6 +1,6 @@
 package com.lambda.hrpc.registry.common.loadbalance;
 
-import com.lambda.hrpc.common.entity.RegistryInfo;
+import com.lambda.hrpc.common.registry.RegistryInfo;
 
 import java.util.List;
 

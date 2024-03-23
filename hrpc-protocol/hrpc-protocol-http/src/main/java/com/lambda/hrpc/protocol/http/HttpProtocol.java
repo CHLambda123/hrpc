@@ -1,10 +1,9 @@
 package com.lambda.hrpc.protocol.http;
 
-import com.google.protobuf.Message;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
-import com.lambda.hrpc.protocol.common.Invocation;
-import com.lambda.hrpc.protocol.common.Protocol;
-import com.lambda.hrpc.protocol.common.util.ProtocolUtil;
+import com.lambda.hrpc.common.protocol.Invocation;
+import com.lambda.hrpc.common.protocol.Protocol;
+import com.lambda.hrpc.common.protocol.util.ProtocolUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
@@ -15,14 +14,18 @@ import java.net.URI;
 import java.util.Map;
 
 public class HttpProtocol implements Protocol {
-    private final Map<String, Map<String, Object>> localServicesCache;
-    private final String baseDir;
-    private final String webAppDir;
+    private Map<String, Map<String, Object>> localServicesCache;
+    private String baseDir;
+    private String webAppDir;
 
     public HttpProtocol(Map<String, Map<String, Object>> localServicesCache, String baseDir, String webAppDir) {
         this.localServicesCache = localServicesCache;
         this.baseDir = baseDir;
         this.webAppDir = webAppDir;
+    }
+    
+    public HttpProtocol() {
+        
     }
 
     @Override
@@ -43,7 +46,7 @@ public class HttpProtocol implements Protocol {
     }
 
     @Override
-    public Message executeRequest(String ip, Integer port, Invocation.AppInvocation invocation, Class<?> returnType) throws HrpcRuntimeException {
+    public <T> T executeRequest(String ip, Integer port, Invocation.AppInvocation invocation, Class<T> returnType) throws HrpcRuntimeException {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost();
             httpPost.setEntity(new ByteArrayEntity(invocation.toByteArray()));
@@ -55,7 +58,7 @@ public class HttpProtocol implements Protocol {
                         "\nentity: " + httpResponse.getEntity());
             }
             byte[] bytes = httpResponse.getEntity().getContent().readAllBytes();
-            return ProtocolUtil.bytesToMessage(bytes, returnType);
+            return (T)ProtocolUtil.bytesToMessage(bytes, returnType);
         } catch (Exception e) {
             throw new HrpcRuntimeException(e);
         }

@@ -1,6 +1,5 @@
-package com.lambda.hrpc.registry.common;
+package com.lambda.hrpc.common.registry;
 
-import com.lambda.hrpc.common.entity.RegistryInfo;
 import com.lambda.hrpc.common.spi.Spi;
 
 import java.util.List;

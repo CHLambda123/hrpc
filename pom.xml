@@ -14,8 +14,6 @@
         <module>hrpc-consumer</module>
         <module>hrpc-protocol</module>
         <module>hrpc-common</module>
-        <module>hrpc-protocol/hrpc-protocol-common</module>
-        <module>hrpc-protocol/hrpc-protocol-nio</module>
     </modules>
 
     <properties>
@@ -23,18 +21,75 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>0.9</revision>
+        
+        <lombok.version>1.18.30</lombok.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <apacheCommon.version>3.12.0</apacheCommon.version>
+        <protobuf.version>4.26.0</protobuf.version>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.30</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.13</version>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <!--            子模块版本       -->
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-consumer</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-provider</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-registry</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-protocol</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!--        日志依赖        -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!--        common工具类       -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apacheCommon.version}</version>
+            </dependency>
+            <!--    protocol依赖      -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

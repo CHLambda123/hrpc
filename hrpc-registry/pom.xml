@@ -15,20 +15,72 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <zk.version>3.7.2</zk.version>
         <tomcat.version>10.1.1</tomcat.version>
-
+        <jedis.version>4.0.0</jedis.version>
+        <guava.version>33.0.0-jre</guava.version>
+        <zk.version>3.5.8</zk.version>
+        <curator.version>5.1.0</curator.version>
+        <zookeeper.version>3.7.2</zookeeper.version>
     </properties>
     <modules>
         <module>hrpc-registry-common</module>
         <module>hrpc-registry-zookeeper</module>
+        <module>hrpc-registry-redis</module>
     </modules>
     <dependencies>
         <dependency>
             <groupId>com.lambda</groupId>
             <artifactId>hrpc-common</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <!--        子模块依赖版本     -->
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-registry-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-registry-zookeeper</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lambda</groupId>
+                <artifactId>hrpc-registry-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            
+            <!--        redis注册中心依赖     -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!--        zookeeper注册中心依赖     -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zk.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
