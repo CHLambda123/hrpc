@@ -5,29 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.lambda</groupId>
-        <artifactId>hrpc</artifactId>
+        <artifactId>hrpc-protocol</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>hrpc-registry</artifactId>
-    <packaging>pom</packaging>
+    <groupId>com.lambda.protocol.common</groupId>
+    <artifactId>hrpc-protocol-nio</artifactId>
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <zk.version>3.7.2</zk.version>
-        <tomcat.version>10.1.1</tomcat.version>
-
+        <netty.version>4.1.107.Final</netty.version>
     </properties>
-    <modules>
-        <module>hrpc-registry-common</module>
-        <module>hrpc-registry-zookeeper</module>
-    </modules>
     <dependencies>
         <dependency>
             <groupId>com.lambda</groupId>
-            <artifactId>hrpc-common</artifactId>
+            <artifactId>hrpc-protocol-common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
         </dependency>
     </dependencies>
 

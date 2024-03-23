@@ -5,6 +5,12 @@
     <file url="file://$PROJECT_DIR$/hrpc-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hrpc-consumer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hrpc-consumer/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-protocol/hrpc-protocol-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-protocol/hrpc-protocol-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-protocol/hrpc-protocol-http/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-protocol/hrpc-protocol-http/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-protocol/hrpc-protocol-nio/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-protocol/hrpc-protocol-nio/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hrpc-protocol/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hrpc-protocol/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hrpc-provider/src/main/java" charset="UTF-8" />

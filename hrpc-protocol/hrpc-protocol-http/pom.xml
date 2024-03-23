@@ -5,40 +5,36 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.lambda</groupId>
-        <artifactId>hrpc-registry</artifactId>
+        <artifactId>hrpc-protocol</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <groupId>com.lambda.registry.redis</groupId>
-    <artifactId>hrpc-registry-redis</artifactId>
+    <artifactId>hrpc-protocol-http</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jedis.version>4.0.0</jedis.version>
-        <guava.version>33.0.0-jre</guava.version>
+        <tomcat.version>9.0.12</tomcat.version>
+        <fastjson.version>1.2.74</fastjson.version>
+        <httpclient.version>4.5.12</httpclient.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.lambda</groupId>
-            <artifactId>hrpc-registry-common</artifactId>
-            <version>${revision}</version>
+            <artifactId>hrpc-protocol-common</artifactId>
+            <version>0.9</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${jedis.version}</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lambda</groupId>
-            <artifactId>hrpc-registry-common</artifactId>
-            <version>${revision}</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
         </dependency>
     </dependencies>
 

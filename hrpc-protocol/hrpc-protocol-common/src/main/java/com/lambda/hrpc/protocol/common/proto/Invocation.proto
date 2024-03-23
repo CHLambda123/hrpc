@@ -1,0 +1,10 @@
+syntax = "proto3";
+package com.lambda.hrpc.protocol.common;
+import "google/protobuf/any.proto";
+message AppInvocation {
+  string serviceName = 1;
+  string version = 2;
+  string methodName = 3;
+  repeated string paramTypes = 4;
+  repeated google.protobuf.Any params = 5;
+}

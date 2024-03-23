@@ -1,0 +1,1 @@
+http = com.lambda.hrpc.protocol.http.HttpProtocol

@@ -14,7 +14,8 @@
         <module>hrpc-consumer</module>
         <module>hrpc-protocol</module>
         <module>hrpc-common</module>
-        <module>hrpc-registry/hrpc-registry-redis</module>
+        <module>hrpc-protocol/hrpc-protocol-common</module>
+        <module>hrpc-protocol/hrpc-protocol-nio</module>
     </modules>
 
     <properties>
