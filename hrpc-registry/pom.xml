@@ -23,7 +23,6 @@
         <zookeeper.version>3.7.2</zookeeper.version>
     </properties>
     <modules>
-        <module>hrpc-registry-common</module>
         <module>hrpc-registry-zookeeper</module>
         <module>hrpc-registry-redis</module>
     </modules>
@@ -36,11 +35,6 @@
     <dependencyManagement>
         <dependencies>
             <!--        子模块依赖版本     -->
-            <dependency>
-                <groupId>com.lambda</groupId>
-                <artifactId>hrpc-registry-common</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <dependency>
                 <groupId>com.lambda</groupId>
                 <artifactId>hrpc-registry-zookeeper</artifactId>
