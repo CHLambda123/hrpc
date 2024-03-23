@@ -6,10 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -39,12 +43,12 @@ public class ExtensionLoader<T> {
         }
     }
 
-    public T getExtension(String name, Object... args) {
-        Object obj = cachedInstances.computeIfAbsent(name, s -> getImpl(s, args));
+    public T getExtension(String name, Map<String, Object> argsMap) {
+        Object obj = cachedInstances.computeIfAbsent(name, s -> getImpl(s, argsMap));
         return (T) obj;
     }
 
-    private Object getImpl(String name, Object... args) {
+    private Object getImpl(String name, Map<String, Object> argsMap) {
         HashMap<String, Class<?>> keyClass = new HashMap<>();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         try {
@@ -66,9 +70,19 @@ public class ExtensionLoader<T> {
                 if (!keyClass.containsKey(name)) {
                     throw new HrpcRuntimeException("找不到对应的类，请检查是否写入配置文件");
                 }
+                if (argsMap == null || argsMap.isEmpty()) {
+                    return keyClass.get(name).getConstructor().newInstance();
+                }
                 Constructor<?>[] constructors = keyClass.get(name).getConstructors();
                 for (Constructor<?> constructor : constructors) {
                     try {
+                        if (constructor.getParameterCount() != argsMap.size()) {
+                            continue;
+                        }
+                        List<Object> args = new ArrayList<>();
+                        for (Parameter parameter : constructor.getParameters()) {
+                            args.add(argsMap.get(parameter.getName()));
+                        }
                         return constructor.newInstance(args);
                     } catch (Exception ige) {
                         continue;

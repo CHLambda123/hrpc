@@ -19,6 +19,11 @@ public class RegistryInfo {
         this.serviceName = serviceName;
         this.version = version;
     }
+    public RegistryInfo(String serviceName, String version, String host) {
+        this.serviceName = serviceName;
+        this.version = version;
+        this.host = host;
+    }
     public RegistryInfo(String serviceName, String version, String host, String port) {
         this.serviceName = serviceName;
         this.version = version;

@@ -8,26 +8,32 @@ import com.lambda.hrpc.common.protocol.Invocation;
 import com.lambda.hrpc.common.protocol.Protocol;
 import com.lambda.hrpc.common.registry.Registry;
 import com.lambda.hrpc.common.registry.RegistryInfo;
+import com.lambda.hrpc.common.spi.ExtensionLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class Consumer<T> {
+public class Consumer {
     private Registry registry;
     private Protocol protocol;
-    public Consumer() {
-        
+    private static Consumer consumer;
+    private Consumer(String registryType, Map<String, Object> registryArgs, String protocolType, Map<String, Object> protocolArgs) {
+        this.registry = ExtensionLoader.getExtensionLoader(Registry.class).getExtension(registryType, registryArgs);
+        this.protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getExtension(protocolType, protocolArgs);
     }
     
-    public Consumer setRegistry(Registry registry) {
-        this.registry = registry;
-        return this;
+    public static Consumer consumerSingleTon(String registryType, Map<String, Object> registryArgs, String protocolType, Map<String, Object> protocolArgs) {
+        if (consumer == null) {
+            synchronized (Consumer.class) {
+                if (consumer == null) {
+                    consumer = new Consumer(registryType, registryArgs, protocolType, protocolArgs);
+                }
+            }
+        }
+        return consumer;
     }
     
-    public Consumer setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-        return this;
-    }
     
     public <T> T getConsumer(String serviceName, String version, String methodName, Class<T> returnType, Message... params) {
         if (registry == null) {
@@ -37,12 +43,8 @@ public class Consumer<T> {
             throw new HrpcRuntimeException("the protocol hasn't been set yet");
         }
         List<RegistryInfo> services = registry.getServices(serviceName, version);
-        
-        
         // TODO: loadBalance
         RegistryInfo registryInfo = services.get(0);
-
-        
         List<Any> paramsList = new ArrayList<>();
         List<String> paramsTypeList = new ArrayList<>();
         for (Message param : params) {
