@@ -1,4 +1,4 @@
-package com.lambda.hrpc.registry.common.loadbalance;
+package com.lambda.hrpc.consumer.loadbalance;
 
 import com.lambda.hrpc.common.spi.Spi;
 import com.lambda.hrpc.common.registry.RegistryInfo;

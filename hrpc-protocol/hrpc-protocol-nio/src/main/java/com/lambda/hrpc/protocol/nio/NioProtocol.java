@@ -73,7 +73,7 @@ public class NioProtocol implements Protocol {
             });
             ChannelFuture future = bootstrap.connect(ip, port).sync();
             future.channel().writeAndFlush(invocation);
-            if (!future.channel().closeFuture().await(5000)) {
+            if (!future.channel().closeFuture().await(1000)) {
                 throw new HrpcRuntimeException("connect to server time out");
             }
 
