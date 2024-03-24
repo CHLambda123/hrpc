@@ -28,6 +28,8 @@
         <apacheCommon.version>3.12.0</apacheCommon.version>
         <protobuf.version>4.26.0</protobuf.version>
         <junit.version>4.13.2</junit.version>
+        <reflections.version>0.10.2</reflections.version>
+        <jakarta.validation.version>3.0.2</jakarta.validation.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -91,11 +93,24 @@
                 <version>${protobuf.version}</version>
             </dependency>
 
-            <!--            测试          -->
+            <!--            测试工具          -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
+            </dependency>
+
+            <!--            反射工具         -->
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
+            </dependency>
+            <!--        验证工具        -->
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

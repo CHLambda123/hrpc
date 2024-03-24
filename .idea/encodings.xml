@@ -27,6 +27,8 @@
     <file url="file://$PROJECT_DIR$/hrpc-registry/hrpc-registry-zookeeper/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hrpc-registry/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hrpc-registry/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-spring-boot-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrpc-spring-boot-starter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/hrpc-registry/demo/pom.xml" />
         <option value="$PROJECT_DIR$/hrpc-registry/hrpc-registry-common/pom.xml" />
         <option value="$PROJECT_DIR$/hrpc-registry/hrpc-registry-file/pom.xml" />
+        <option value="$PROJECT_DIR$/hrpc-spring-boot-starter/pom.xml" />
       </set>
     </option>
   </component>

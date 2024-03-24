@@ -1,10 +1,12 @@
 package com.lambda.hrpc.provider;
 
+import com.lambda.hrpc.common.annotation.AnnotationUtil;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
 import com.lambda.hrpc.common.protocol.Protocol;
 import com.lambda.hrpc.common.registry.Registry;
 import com.lambda.hrpc.common.registry.RegistryInfo;
 import com.lambda.hrpc.common.spi.ExtensionLoader;
+import com.lambda.hrpc.provider.annotation.HrpcService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,31 +30,46 @@ public class Provider {
     private List<RegistryInfo> registryInfoList;
     private Map<String, Map<String, Object>> localServicesCache;
     
-    public static Provider providerSingleTon(String registryType, Map<String, Object> registryArgs, String protocolType, Map<String, Object> protocolArgs) {
+    public static Provider providerSingleTon(Registry registry, String protocolType, Map<String, Object> protocolArgs, String packageName) {
         if (provider == null) {
             synchronized (Provider.class) {
                 if (provider == null) {
-                    provider = new Provider(registryType, registryArgs, protocolType, protocolArgs);
+                    provider = new Provider(registry, protocolType, protocolArgs, packageName);
                 }
             }
         }
         return provider;
     }
     
-    private Provider(String registryType, Map<String, Object> registryArgs, String protocolType, Map<String, Object> protocolArgs) {
-        this.registryInfoList = new ArrayList<>();
-        this.registry = ExtensionLoader.getExtensionLoader(Registry.class).getExtension(registryType, registryArgs);
+    private Provider(Registry registry, String protocolType, Map<String, Object> protocolArgs, String packageName) {
+        this.registry = registry;
         this.protocolType = protocolType;
         this.protocolArgs = protocolArgs;
-        localServicesCache = new HashMap<>();
+        registerLocalServices(packageName);
     }
     
-    public Provider addRegistryInfo(RegistryInfo registryInfo, Object service) {
-        this.registryInfoList.add(registryInfo);
-        this.localServicesCache
-                .computeIfAbsent(registryInfo.getServiceName(), k1 -> new HashMap<>())
-                .computeIfAbsent(registryInfo.getVersion(), k2 -> service);
-        return this;
+    private void registerLocalServices(String packageName) {
+        this.localServicesCache = new HashMap<>();
+        this.protocolArgs.put("localServicesCache", this.localServicesCache);
+        this.registryInfoList = new ArrayList<>();
+        List<Class<?>> classes = AnnotationUtil.scanAnnotation(packageName, HrpcService.class);
+        for (Class<?> aClass : classes) {
+            HrpcService hrpcServiceAnn = aClass.getAnnotation(HrpcService.class);
+            String serviceName = hrpcServiceAnn.serviceName();
+            String version = hrpcServiceAnn.version();
+            int weight = hrpcServiceAnn.weight();
+            String host = hrpcServiceAnn.host();
+            RegistryInfo registryInfo = new RegistryInfo(serviceName, version, host, weight);
+            try {
+                Object service = aClass.getConstructor().newInstance();
+                this.registryInfoList.add(registryInfo);
+                this.localServicesCache
+                        .computeIfAbsent(registryInfo.getServiceName(), k1 -> new HashMap<>())
+                        .computeIfAbsent(registryInfo.getVersion(), k2 -> service);
+            } catch (Exception e) {
+                throw new HrpcRuntimeException(e);
+            }
+        }
     }
     
     public void startProvider() {
@@ -68,8 +85,8 @@ public class Provider {
         for (RegistryInfo registryInfo : registryInfoList) {
             while (portSet.contains(port)) {
                 port = findUnusedPort();
-                portSet.add(port);
             }
+            portSet.add(port);
             registryInfo.setPort(String.valueOf(port));
             if (StringUtils.isEmpty(registryInfo.getHost())) {
                 try {
