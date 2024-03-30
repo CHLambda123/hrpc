@@ -33,7 +33,7 @@ public class HttpProtocol implements Protocol {
 
     @Override
     public void startNewServer(Integer port) {
-        String threadName = String.valueOf(port);
+        String threadName = "http-" + String.valueOf(port);
         for (Thread thread : Thread.getAllStackTraces().keySet()) {
             if (threadName.equals(thread.getName())) {
                 return;

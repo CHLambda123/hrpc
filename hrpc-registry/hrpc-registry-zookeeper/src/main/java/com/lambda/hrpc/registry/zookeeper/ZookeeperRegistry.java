@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Slf4j
 public class ZookeeperRegistry implements Registry {
-    private ZkClient zkClient;
+    private final ZkClient zkClient;
 
     // service根目录
     static private final String SERVICE_ROOT = "serviceRoot";
