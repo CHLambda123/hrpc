@@ -6,7 +6,8 @@
     <parent>
         <groupId>com.lambda</groupId>
         <artifactId>hrpc</artifactId>
-        <version>0.9</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>hrpc-provider</artifactId>
@@ -20,8 +21,28 @@
         <dependency>
             <groupId>com.lambda</groupId>
             <artifactId>hrpc-common</artifactId>
+            <version>${revision}</version>
         </dependency>
-
+        
+        <!--        测试使用        -->
+        <dependency>
+            <groupId>com.lambda</groupId>
+            <artifactId>hrpc-registry-zookeeper</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.lambda</groupId>
+            <artifactId>hrpc-protocol-nio</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--        测试工具        -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

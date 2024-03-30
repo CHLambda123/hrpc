@@ -1,5 +1,6 @@
 package com.lambda.hrpc.protocol.http;
 
+import com.lambda.hrpc.common.annotation.FieldName;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
 import com.lambda.hrpc.common.protocol.Invocation;
 import com.lambda.hrpc.common.protocol.Protocol;
@@ -17,8 +18,10 @@ public class HttpProtocol implements Protocol {
     private Map<String, Map<String, Object>> localServicesCache;
     private String baseDir;
     private String webAppDir;
-
-    public HttpProtocol(Map<String, Map<String, Object>> localServicesCache, String baseDir, String webAppDir) {
+    
+    public HttpProtocol(@FieldName("localServiceCache") Map<String, Map<String, Object>> localServicesCache,
+                        @FieldName("baseDir") String baseDir,
+                        @FieldName("webAppDir") String webAppDir) {
         this.localServicesCache = localServicesCache;
         this.baseDir = baseDir;
         this.webAppDir = webAppDir;
@@ -49,7 +52,7 @@ public class HttpProtocol implements Protocol {
     public <T> T executeRequest(String ip, Integer port, Invocation.AppInvocation invocation, Class<T> returnType) throws HrpcRuntimeException {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost();
-            httpPost.setEntity(new ByteArrayEntity(invocation.toByteArray()));
+            httpPost.setEntity(new ByteArrayEntity(ProtocolUtil.messageToBytes(invocation)));
             httpPost.setURI(URI.create("http://" + ip + ":" + port));
             CloseableHttpResponse httpResponse = client.execute(httpPost);
             int statusCode = httpResponse.getStatusLine().getStatusCode();

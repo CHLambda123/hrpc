@@ -7,9 +7,9 @@
         <groupId>com.lambda</groupId>
         <artifactId>hrpc-registry</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.lambda.registry.redis</groupId>
     <artifactId>hrpc-registry-redis</artifactId>
 
     <properties>
@@ -25,6 +25,12 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+        <!--        测试工具        -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

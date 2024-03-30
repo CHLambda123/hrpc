@@ -7,9 +7,9 @@
         <groupId>com.lambda</groupId>
         <artifactId>hrpc-protocol</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.lambda.protocol.common</groupId>
     <artifactId>hrpc-protocol-nio</artifactId>
 
     <properties>
@@ -23,6 +23,12 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
+        </dependency>
+        <!--        测试工具        -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

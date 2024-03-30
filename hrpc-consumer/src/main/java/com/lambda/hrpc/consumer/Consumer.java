@@ -10,29 +10,26 @@ import com.lambda.hrpc.common.protocol.Protocol;
 import com.lambda.hrpc.common.registry.Registry;
 import com.lambda.hrpc.common.registry.RegistryInfo;
 import com.lambda.hrpc.common.spi.ExtensionLoader;
-import com.lambda.hrpc.consumer.annotation.HrpcClient;
-import com.lambda.hrpc.consumer.annotation.HrpcClientProxy;
 import com.lambda.hrpc.consumer.loadbalance.LoadBalance;
 import com.lambda.hrpc.consumer.loadbalance.SimpleLoadBalance;
+import com.lambda.hrpc.consumer.proxy.HrpcClient;
+import com.lambda.hrpc.consumer.proxy.HrpcClientProxy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class Consumer {
-    private Registry registry;
-    private Protocol protocol;
-    private static Consumer consumer;
-    private List<Object> clients;    
+    private final Registry registry;
+    private final Protocol protocol;
+    private static volatile Consumer consumer;
+    private final Map<String, Object> clientsMap;
     private Consumer(Registry registry, String protocolType, String packageName) {
         this.registry = registry;
         this.protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getExtension(protocolType, null);
-        clients = setAllClient(packageName);
+        clientsMap = new HashMap<>();
+        setAllClient(packageName);
     }
     
     public static Consumer consumerSingleTon(Registry registry, String protocolType, String packageName) {
@@ -47,26 +44,28 @@ public class Consumer {
     }
     
     public List<Object> getAllClient() {
-        return this.clients;
+        return List.of(this.clientsMap.values().toArray());
     }
     
-    private List<Object> setAllClient(String packageName) {
-        List<Class<?>> classes = AnnotationUtil.scanAnnotation(packageName, HrpcClient.class);
-        if (classes.isEmpty()) {
-            return new ArrayList<>();
+    public <T> T getClient(Class<T> clazz) {
+        Object obj = this.clientsMap.get(clazz.getName());
+        if (obj == null) {
+            throw new HrpcRuntimeException("there has no service for class: " + clazz.getName());
         }
-        return classes.stream().map(c -> {
-            try {
-                // 代理，使得object中的方法最终走requestService方法
-                Object target = c.getConstructor().newInstance();
-                return new HrpcClientProxy(this, target).createProxy(target.getClass());
-            } catch (Exception e) {
-                throw new HrpcRuntimeException(e);
-            }
-        }).collect(Collectors.toList());
+        return (T)obj;
     }
     
-    public <T> T requestService(String serviceName, String version, String methodName, Class<T> returnType, Message... params) {
+    private void setAllClient(String packageName) {
+        List<Class<?>> classes = AnnotationUtil.scanAnnotation(packageName, HrpcClient.class);
+        for (Class<?> aClass : classes) {
+            if (!aClass.isInterface()) {
+                continue;
+            }
+            this.clientsMap.put(aClass.getName(), new HrpcClientProxy(this, aClass).createProxy());
+        }
+    }
+    
+    public  <T> T requestService(String serviceName, String version, String methodName, Class<T> returnType, Message... params) {
         if (registry == null) {
             throw new HrpcRuntimeException("the registry hasn't been set yet");
         }
@@ -77,47 +76,31 @@ public class Consumer {
         if (services == null || services.isEmpty()) {
             throw new HrpcRuntimeException("find no services");
         }
-        
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<T> future = executor.submit(new Callable<T>() {
-            @Override
-            public T call() throws Exception {
-                while (true) {
-                    try {
-                        LoadBalance loadBalance = new SimpleLoadBalance();
-                        RegistryInfo registryInfo = loadBalance.selectOneService(services);
-                        List<Any> paramsList = new ArrayList<>();
-                        List<String> paramsTypeList = new ArrayList<>();
-                        for (Message param : params) {
-                            paramsList.add(Any.pack(param));
-                            paramsTypeList.add(param.getClass().getName());
-                        }
-                        String ip = registryInfo.getHost();
-                        String port = registryInfo.getPort();
-                        Invocation.AppInvocation invocation = Invocation.AppInvocation.newBuilder()
-                                .setServiceName(serviceName)
-                                .setVersion(version)
-                                .setMethodName(methodName)
-                                .addAllParamTypes(paramsTypeList)
-                                .addAllParams(paramsList)
-                                .build();
-                        return protocol.executeRequest(ip, Integer.valueOf(port), invocation, returnType);
-                    } catch (Exception igE) {
-
-                    }
-                }
+        for (int i = 0; i < services.size(); i++) {
+            LoadBalance loadBalance = new SimpleLoadBalance();
+            RegistryInfo registryInfo = loadBalance.selectOneService(services);
+            List<Any> paramsList = new ArrayList<>();
+            List<String> paramsTypeList = new ArrayList<>();
+            for (Message param : params) {
+                paramsList.add(Any.pack(param));
+                paramsTypeList.add(param.getClass().getName());
             }
-        });
-
-        try {
-            // 5秒超时
-            return future.get(5, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            throw new HrpcRuntimeException(e);
-        } finally {
-            // 关闭线程池
-            executor.shutdownNow();
+            String ip = registryInfo.getHost();
+            String port = registryInfo.getPort();
+            Invocation.AppInvocation invocation = Invocation.AppInvocation.newBuilder()
+                    .setServiceName(serviceName)
+                    .setVersion(version)
+                    .setMethodName(methodName)
+                    .addAllParamTypes(paramsTypeList)
+                    .addAllParams(paramsList)
+                    .build();
+            try {
+                return protocol.executeRequest(ip, Integer.valueOf(port), invocation, returnType);
+            } catch (Exception igE) {
+                registryInfo.setWeight(registryInfo.getWeight()*(-1));
+            }
         }
-    }
-    
+        throw new HrpcRuntimeException("there has no service available");
+
+    }    
 }

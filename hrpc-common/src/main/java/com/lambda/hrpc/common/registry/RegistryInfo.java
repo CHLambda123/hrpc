@@ -15,8 +15,9 @@ public class RegistryInfo {
     private String version;
     private String host;
     private String port;
-    @Size(min = 1, max = 10, message = "weight must be between 1 and 10")
+    @Size(min = 1, max = 10, message = "weight must be set between 1 and 10")
     private int weight = 1;
+    
     public RegistryInfo(String serviceName, String version) {
         this.serviceName = serviceName;
         this.version = version;

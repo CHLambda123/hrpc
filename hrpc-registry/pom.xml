@@ -7,6 +7,7 @@
         <groupId>com.lambda</groupId>
         <artifactId>hrpc</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>hrpc-registry</artifactId>
@@ -30,6 +31,7 @@
         <dependency>
             <groupId>com.lambda</groupId>
             <artifactId>hrpc-common</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

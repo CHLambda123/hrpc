@@ -8,13 +8,15 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @ChannelHandler.Sharable
 public class NettyServerHandler extends SimpleChannelInboundHandler<Invocation.AppInvocation> {
     private final Map<String, Map<String, Object>> localServicesCache;
     public NettyServerHandler(Map<String, Map<String, Object>> localServicesCache) {
-        this.localServicesCache = localServicesCache;
+        this.localServicesCache = new HashMap<>();
+        this.localServicesCache.putAll(localServicesCache);
     }
 
     @Override

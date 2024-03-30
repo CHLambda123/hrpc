@@ -118,7 +118,7 @@ public class ZkClient {
         }
     }
 
-    public void wathServicesChange(String path, ServicesChangeHandle servicesChangeHandle) {
+    public void watchServicesChange(String path, ServicesChangeHandle servicesChangeHandle) {
         CuratorCacheBridge curatorCacheBridge = CuratorCache.bridgeBuilder(client, path).build();
         curatorCacheBridge.listenable().addListener((type, oldData, newData) -> {
             String typeStr = null;

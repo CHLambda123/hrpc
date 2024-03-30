@@ -4,9 +4,9 @@ import com.lambda.hrpc.common.exception.HrpcRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
+import redis.clients.jedis.JedisSentinelPool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +14,14 @@ import java.util.Set;
 
 @Slf4j
 public class RedisClient {
-    private final JedisPool jedisPool;
+    private final JedisSentinelPool jedisPool;
     private final String eventPrefix = "__keyevent@*__:serviceEvent";
-    public RedisClient(String host, int port, String password) {
-        JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxIdle(8);
-        config.setMaxTotal(18);
-        jedisPool = new JedisPool(config, host, port, 2000, password);
+    public RedisClient(Set<String> sentinels, String masterName, String password) {
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
+        poolConfig.setMaxIdle(8);
+        poolConfig.setMaxTotal(18);
+        int connectionTimeout = 5000;
+        jedisPool = new JedisSentinelPool(masterName, sentinels, poolConfig, connectionTimeout, password);
     }
 
     public Map<String, String> getAllKeysAndValues(String prefix) {

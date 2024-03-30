@@ -5,10 +5,12 @@ import com.lambda.hrpc.common.registry.RegistryInfo;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class SimpleLoadBalance implements LoadBalance{
     @Override
     public RegistryInfo selectOneService(List<RegistryInfo> services) {
+        services = services.stream().filter(s -> s.getWeight() > 0).collect(Collectors.toList());
         if (services.size() == 1) {
             return services.get(0);
         }

@@ -1,5 +1,6 @@
 package com.lambda.hrpc.common.spi;
 
+import com.lambda.hrpc.common.annotation.FieldName;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,9 +82,9 @@ public class ExtensionLoader<T> {
                         }
                         List<Object> args = new ArrayList<>();
                         for (Parameter parameter : constructor.getParameters()) {
-                            args.add(argsMap.get(parameter.getName()));
+                            args.add(argsMap.get(parameter.getAnnotation(FieldName.class).value()));
                         }
-                        return constructor.newInstance(args);
+                        return constructor.newInstance(args.toArray());
                     } catch (Exception ige) {
                         continue;
                     }

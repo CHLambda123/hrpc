@@ -1,6 +1,7 @@
 package com.lambda.hrpc.protocol.nio;
 
 import com.google.protobuf.Message;
+import com.lambda.hrpc.common.annotation.FieldName;
 import com.lambda.hrpc.common.exception.HrpcRuntimeException;
 import com.lambda.hrpc.common.protocol.Invocation;
 import com.lambda.hrpc.common.protocol.Protocol;
@@ -28,7 +29,7 @@ public class NioProtocol implements Protocol {
     private final MessageToByteEncoder<Message> protocolEncoder;
     private ChannelInboundHandlerAdapter protocolServerHandler;
     
-    public NioProtocol(Map<String, Map<String, Object>> localServicesCache) {
+    public NioProtocol(@FieldName("localServicesCache") Map<String, Map<String, Object>> localServicesCache) {
         this.protocolEncoder = new NettyEncoder();
         this.protocolServerHandler = new NettyServerHandler(localServicesCache);
     }
@@ -63,13 +64,13 @@ public class NioProtocol implements Protocol {
                     .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
                     .option(ChannelOption.SO_REUSEADDR, true)
                     .handler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    socketChannel.pipeline()
-                            .addLast(protocolEncoder)
-                            .addLast(new NettyDecoder(returnType))
-                            .addLast(new NettyClientHandler(sharedResult));
-                }
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            socketChannel.pipeline()
+                                    .addLast(protocolEncoder)
+                                    .addLast(new NettyDecoder(returnType))
+                                    .addLast(new NettyClientHandler(sharedResult));
+                        }
             });
             ChannelFuture future = bootstrap.connect(ip, port).sync();
             future.channel().writeAndFlush(invocation);

@@ -2,6 +2,7 @@ package com.lambda.hrpc.registry.redis;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.lambda.hrpc.common.annotation.FieldName;
 import com.lambda.hrpc.common.registry.RegistryInfo;
 import com.lambda.hrpc.common.registry.Registry;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,8 @@ public class RedisRegistry implements Registry {
 
     private static final int KEY_EXPIRED_PERIOD = 2;
 
-    public RedisRegistry(String host, String port, String password) {
-        redisClient = new RedisClient(host, Integer.parseInt(port), password);
+    public RedisRegistry(@FieldName("sentinels") Set<String> sentinels, @FieldName("masterName") String masterName, @FieldName("password") String password) {
+        redisClient = new RedisClient(sentinels, masterName, password);
         serviceCache = CacheBuilder.newBuilder()
                 .maximumSize(MAX_SERVICE_COUNT)
                 .expireAfterWrite(KEY_EXPIRED_PERIOD, TimeUnit.SECONDS)
@@ -43,7 +44,6 @@ public class RedisRegistry implements Registry {
     }
 
     private void handleServiceEvent(String channel, String message) {
-        log.info("channel: {}, message: {}", channel, message);
         if (StringUtils.isEmpty(message)) {
             return;
         }
@@ -95,7 +95,7 @@ public class RedisRegistry implements Registry {
     }
 
     @Override
-    public void unregister(RegistryInfo registryInfo) {
+    public void unregistService(RegistryInfo registryInfo) {
         String key = splicingKey(registryInfo);
         providerCache.remove(key);
         redisClient.publishEvent(UN_REGISTER, splicingKey(registryInfo));

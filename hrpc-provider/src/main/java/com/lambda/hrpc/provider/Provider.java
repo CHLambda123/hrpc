@@ -23,13 +23,12 @@ import java.util.Set;
 
 @Slf4j
 public class Provider {
-    private Registry registry;
-    private String protocolType;
-    private Map<String, Object> protocolArgs;
-    private static Provider provider;
+    private final Registry registry;
+    private final String protocolType;
+    private final Map<String, Object> protocolArgs;
+    private static volatile Provider provider;
     private List<RegistryInfo> registryInfoList;
-    private Map<String, Map<String, Object>> localServicesCache;
-    
+
     public static Provider providerSingleTon(Registry registry, String protocolType, Map<String, Object> protocolArgs, String packageName) {
         if (provider == null) {
             synchronized (Provider.class) {
@@ -44,13 +43,16 @@ public class Provider {
     private Provider(Registry registry, String protocolType, Map<String, Object> protocolArgs, String packageName) {
         this.registry = registry;
         this.protocolType = protocolType;
-        this.protocolArgs = protocolArgs;
+        this.protocolArgs = new HashMap<>();
+        if (protocolArgs != null) {
+            this.protocolArgs.putAll(protocolArgs);
+        }
         registerLocalServices(packageName);
     }
     
     private void registerLocalServices(String packageName) {
-        this.localServicesCache = new HashMap<>();
-        this.protocolArgs.put("localServicesCache", this.localServicesCache);
+        Map<String, Map<String, Object>> localServicesCache = new HashMap<>();
+        this.protocolArgs.put("localServicesCache", localServicesCache);
         this.registryInfoList = new ArrayList<>();
         List<Class<?>> classes = AnnotationUtil.scanAnnotation(packageName, HrpcService.class);
         for (Class<?> aClass : classes) {
@@ -63,7 +65,7 @@ public class Provider {
             try {
                 Object service = aClass.getConstructor().newInstance();
                 this.registryInfoList.add(registryInfo);
-                this.localServicesCache
+                localServicesCache
                         .computeIfAbsent(registryInfo.getServiceName(), k1 -> new HashMap<>())
                         .computeIfAbsent(registryInfo.getVersion(), k2 -> service);
             } catch (Exception e) {
@@ -81,11 +83,11 @@ public class Provider {
             throw new HrpcRuntimeException("the protocol hasn't been set yet");
         }
         Set<Integer> portSet = new HashSet<>();
-        Integer port = 1010;
+        Integer port;
         for (RegistryInfo registryInfo : registryInfoList) {
-            while (portSet.contains(port)) {
+            do {
                 port = findUnusedPort();
-            }
+            } while (portSet.contains(port));
             portSet.add(port);
             registryInfo.setPort(String.valueOf(port));
             if (StringUtils.isEmpty(registryInfo.getHost())) {

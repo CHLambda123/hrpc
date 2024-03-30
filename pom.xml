@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <groupId>com.lambda</groupId>
     <artifactId>hrpc</artifactId>
     <version>${revision}</version>
@@ -20,6 +20,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
         <revision>0.9</revision>
         
         <lombok.version>1.18.30</lombok.version>
@@ -33,32 +34,6 @@
     </properties>
     <dependencyManagement>
         <dependencies>
-            <!--            子模块版本       -->
-            <dependency>
-                <groupId>com.lambda</groupId>
-                <artifactId>hrpc-common</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lambda</groupId>
-                <artifactId>hrpc-consumer</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lambda</groupId>
-                <artifactId>hrpc-provider</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lambda</groupId>
-                <artifactId>hrpc-registry</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lambda</groupId>
-                <artifactId>hrpc-protocol</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <!--        日志依赖        -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -92,14 +67,12 @@
                 <artifactId>protobuf-java</artifactId>
                 <version>${protobuf.version}</version>
             </dependency>
-
             <!--            测试工具          -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
-
             <!--            反射工具         -->
             <dependency>
                 <groupId>org.reflections</groupId>
@@ -114,5 +87,40 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.6.0</version> <!-- 注意这里需要使用最新的稳定版本 -->
+                <configuration>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                            <updatePomFile>true</updatePomFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>flatten.cleans</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <inherited>true</inherited>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

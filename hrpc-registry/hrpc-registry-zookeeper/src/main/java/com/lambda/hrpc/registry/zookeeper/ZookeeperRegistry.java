@@ -1,5 +1,6 @@
 package com.lambda.hrpc.registry.zookeeper;
 
+import com.lambda.hrpc.common.annotation.FieldName;
 import com.lambda.hrpc.common.registry.RegistryInfo;
 import com.lambda.hrpc.common.registry.Registry;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,11 @@ public class ZookeeperRegistry implements Registry {
     // service缓存
     private final Map<String, Map<String, Map<String, RegistryInfo>>> serviceCache;
 
-    public ZookeeperRegistry(String zkUrl) {
+    public ZookeeperRegistry(@FieldName("zkUrl") String zkUrl) {
         this.zkClient = new ZkClient(zkUrl);
         serviceCache = new HashMap<>(64);
         // 注册监听
-        zkClient.wathServicesChange(splicingPath(SERVICE_ROOT), this::handleWithServiceChanged);
+        zkClient.watchServicesChange(splicingPath(SERVICE_ROOT), this::handleWithServiceChanged);
     }
 
     /**
@@ -136,7 +137,7 @@ public class ZookeeperRegistry implements Registry {
     }
 
     @Override
-    public void unregister(RegistryInfo registryInfo) {
+    public void unregistService(RegistryInfo registryInfo) {
         String ephemNode = splicingPath(SERVICE_ROOT, registryInfo.getServiceName(), registryInfo.getVersion(),
                 splicingHostAndPort(registryInfo.getHost(), registryInfo.getPort()));
         zkClient.deletePath(ephemNode);
@@ -144,7 +145,7 @@ public class ZookeeperRegistry implements Registry {
 
     @Override
     public List<RegistryInfo> getServices(String serviceName, String version) {
-        Map<String, Map<String, RegistryInfo>> mapTemp = Optional.ofNullable(this.serviceCache.get(serviceName)).orElse(new HashMap<>());
-        return new ArrayList<>(mapTemp.get(version).values());
+        Map<String, Map<String, RegistryInfo>> mapTemp = Map.copyOf(Optional.ofNullable(this.serviceCache.get(serviceName)).orElse(new HashMap<>())) ;
+        return new ArrayList<>(Optional.ofNullable(mapTemp.get(version)).orElse(new HashMap<>()).values());
     }
 }

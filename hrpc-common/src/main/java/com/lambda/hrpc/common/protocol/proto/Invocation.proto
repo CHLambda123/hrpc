@@ -2,9 +2,14 @@ syntax = "proto3";
 package com.lambda.hrpc.protocol.common;
 import "google/protobuf/any.proto";
 message AppInvocation {
+  // 服务名
   string serviceName = 1;
+  // 服务版本
   string version = 2;
+  // 方法名
   string methodName = 3;
+  // 参数类型列表
   repeated string paramTypes = 4;
+  // 参数列表
   repeated google.protobuf.Any params = 5;
 }

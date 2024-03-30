@@ -13,6 +13,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ProtocolUtil {
+
+    /**
+     * 反序列化
+     */
     public static Message bytesToMessage(byte[] bytes, Class<?> returnType) {
         if (!Message.class.isAssignableFrom(returnType)) {
             throw new HrpcRuntimeException("return type should be able to be serialized by protobuf");
@@ -26,6 +30,10 @@ public class ProtocolUtil {
             throw new HrpcRuntimeException(e);
         }
     }
+
+    /**
+     * 序列化
+     */
     public static byte[] messageToBytes(Message message) {
         return Any.pack(message).toByteArray();
     }
@@ -59,7 +67,6 @@ public class ProtocolUtil {
         }
         String methodName = invocation.getMethodName();
         Method method = service.getClass().getMethod(methodName, paramsTypeList.toArray(new Class<?>[0]));
-        Object res = method.invoke(service, messageList.toArray());
-        return res;
+        return method.invoke(service, messageList.toArray());
     }
 }

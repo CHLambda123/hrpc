@@ -11,6 +11,9 @@ public class AnnotationUtil {
     public static List<Class<?>> scanAnnotation(String packageName, Class<?> annotation) {
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> typeSet = reflections.getTypesAnnotatedWith((Class<? extends Annotation>) annotation);
+        if (typeSet == null) {
+            return new ArrayList<>();
+        }
         return new ArrayList<>(typeSet);
     }
     

@@ -6,7 +6,7 @@ import java.util.List;
 @Spi
 public interface Registry {
     void registService(RegistryInfo registryInfo);
-    void unregister(RegistryInfo registryInfo);
+    void unregistService(RegistryInfo registryInfo);
 
     List<RegistryInfo> getServices(String serviceName, String version);
 
