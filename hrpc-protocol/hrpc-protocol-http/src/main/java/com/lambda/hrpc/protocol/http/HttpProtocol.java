@@ -52,7 +52,7 @@ public class HttpProtocol implements Protocol {
     public <T> T executeRequest(String ip, Integer port, Invocation.AppInvocation invocation, Class<T> returnType) throws HrpcRuntimeException {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost();
-            httpPost.setEntity(new ByteArrayEntity(ProtocolUtil.messageToBytes(invocation)));
+            httpPost.setEntity(new ByteArrayEntity(invocation.toByteArray()));
             httpPost.setURI(URI.create("http://" + ip + ":" + port));
             CloseableHttpResponse httpResponse = client.execute(httpPost);
             int statusCode = httpResponse.getStatusLine().getStatusCode();

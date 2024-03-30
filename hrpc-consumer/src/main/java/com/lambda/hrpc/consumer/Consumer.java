@@ -43,8 +43,8 @@ public class Consumer {
         return consumer;
     }
     
-    public List<Object> getAllClient() {
-        return List.of(this.clientsMap.values().toArray());
+    public Map<String, Object> getAllClient() {
+        return this.clientsMap;
     }
     
     public <T> T getClient(Class<T> clazz) {
