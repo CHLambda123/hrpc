@@ -1,16 +1,19 @@
 package com.lambda.hrpc.registry.zookeeper;
 
 import com.lambda.hrpc.common.annotation.FieldName;
-import com.lambda.hrpc.common.registry.RegistryInfo;
+import com.lambda.hrpc.common.exception.HrpcRuntimeException;
 import com.lambda.hrpc.common.registry.Registry;
+import com.lambda.hrpc.common.registry.RegistryInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class ZookeeperRegistry implements Registry {
@@ -21,12 +24,30 @@ public class ZookeeperRegistry implements Registry {
 
     // service缓存
     private final Map<String, Map<String, Map<String, RegistryInfo>>> serviceCache;
+    private final Set<RegistryInfo> providerCache;
+    
 
     public ZookeeperRegistry(@FieldName("zkUrl") String zkUrl) {
         this.zkClient = new ZkClient(zkUrl);
         serviceCache = new HashMap<>(64);
+        providerCache = new HashSet<>(64);
         // 注册监听
         zkClient.watchServicesChange(splicingPath(SERVICE_ROOT), this::handleWithServiceChanged);
+        new Thread(()->{
+            while (true) {
+                for (RegistryInfo registryInfo : providerCache) {
+                    String persisNode = splicingPath(SERVICE_ROOT, registryInfo.getServiceName(), registryInfo.getVersion());
+                    String ephemNode = splicingPath(persisNode,
+                            splicingHostAndPort(registryInfo.getHost(), registryInfo.getPort()));
+                    zkClient.createEphemeral(ephemNode, String.valueOf(registryInfo.getWeight()));
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new HrpcRuntimeException(e);
+                }
+            }
+        }, "zk-registerService").start();
     }
 
     /**
@@ -129,11 +150,7 @@ public class ZookeeperRegistry implements Registry {
 
     @Override
     public void registService(RegistryInfo registryInfo) {
-        String persisNode = splicingPath(SERVICE_ROOT, registryInfo.getServiceName(), registryInfo.getVersion());
-        zkClient.createPersistent(persisNode);
-        String ephemNode = splicingPath(persisNode,
-                splicingHostAndPort(registryInfo.getHost(), registryInfo.getPort()));
-        zkClient.createEphemeral(ephemNode, String.valueOf(registryInfo.getWeight()));
+        providerCache.add(registryInfo);
     }
 
     @Override

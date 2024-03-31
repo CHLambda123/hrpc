@@ -75,39 +75,32 @@ public class Provider {
     }
     
     public void startProvider() {
-        while (true) {
-            if (this.registry == null) {
-                throw new HrpcRuntimeException("the registry hasn't been set yet");
-            }
+        if (this.registry == null) {
+            throw new HrpcRuntimeException("the registry hasn't been set yet");
+        }
 
-            if (StringUtils.isEmpty(this.protocolType)) {
-                throw new HrpcRuntimeException("the protocol hasn't been set yet");
+        if (StringUtils.isEmpty(this.protocolType)) {
+            throw new HrpcRuntimeException("the protocol hasn't been set yet");
+        }
+        Set<Integer> portSet = new HashSet<>();
+        for (RegistryInfo registryInfo : registryInfoList) {
+            Integer port;
+            if (StringUtils.isEmpty(registryInfo.getPort())) {
+                do {
+                    port = findUnusedPort();
+                } while (portSet.contains(port));
+                portSet.add(port);
+                registryInfo.setPort(String.valueOf(port));
             }
-            Set<Integer> portSet = new HashSet<>();
-            for (RegistryInfo registryInfo : registryInfoList) {
-                Integer port;
-                if (StringUtils.isEmpty(registryInfo.getPort())) {
-                    do {
-                        port = findUnusedPort();
-                    } while (portSet.contains(port));
-                    portSet.add(port);
-                    registryInfo.setPort(String.valueOf(port));
+            if (StringUtils.isEmpty(registryInfo.getHost())) {
+                try {
+                    registryInfo.setHost(InetAddress.getLocalHost().getHostAddress());
+                } catch (UnknownHostException e) {
+                    throw new HrpcRuntimeException(e);
                 }
-                if (StringUtils.isEmpty(registryInfo.getHost())) {
-                    try {
-                        registryInfo.setHost(InetAddress.getLocalHost().getHostAddress());
-                    } catch (UnknownHostException e) {
-                        throw new HrpcRuntimeException(e);
-                    }
-                }
-                this.registry.registService(registryInfo);
-                this.startSingleService(Integer.valueOf(registryInfo.getPort()));
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new HrpcRuntimeException(e);
-            }
+            this.registry.registService(registryInfo);
+            this.startSingleService(Integer.valueOf(registryInfo.getPort()));
         }
     }
     

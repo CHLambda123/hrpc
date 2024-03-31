@@ -18,7 +18,7 @@ public class ZookeeperRegistryTest {
         Registry registry = ExtensionLoader.getExtensionLoader(Registry.class).getExtension("zookeeper", map);
         RegistryInfo registryInfo = new RegistryInfo("serviceName", "v1", null, null, 1);
         registry.registService(registryInfo);
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         List<RegistryInfo> services = registry.getServices("serviceName", "v1");
         Assert.assertEquals(services.size(), 1);
         Assert.assertEquals(services.get(0).getServiceName(), registryInfo.getServiceName());
